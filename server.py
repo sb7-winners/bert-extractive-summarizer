@@ -7,7 +7,7 @@ from nltk import tokenize
 from typing import List
 import argparse
 from summarizer import Summarizer, TransformerSummarizer
-
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -85,7 +85,8 @@ if __name__ == '__main__':
     parser.add_argument('-host', dest='host', help='', default='0.0.0.0')
 
     args = parser.parse_args()
-
+    
+    
     if args.transformer_type is not None:
         print(f"Using Model: {args.transformer_type}")
         assert args.transformer_key is not None, 'Transformer Key cannot be none with the transformer type'
@@ -105,5 +106,6 @@ if __name__ == '__main__':
             hidden=int(args.hidden),
             reduce_option=args.reduce
         )
-
-    app.run(host=args.host, port=int(args.port))
+        
+    port = os.environ.get('PORT')
+    app.run(host=args.host, port=int(port))
